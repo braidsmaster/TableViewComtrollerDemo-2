@@ -21,6 +21,13 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
     var numbersFileInDirectory: [Int] = []
     var filesInDirectory: [String] = []
     
+    var avPlayer: AVPlayer!
+    var visibleIP : IndexPath?
+    var aboutToBecomeInvisibleCell = -1
+    var avPlayerLayer: AVPlayerLayer!
+    var paused: Bool = false
+    
+    
     func getFileFromDisk() {
         
         
@@ -72,6 +79,7 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         
 //        VideoHelper.startMediaBrowser(delegate: self, sourceType: .savedPhotosAlbum)
     
+        visibleIP = IndexPath.init(row: 0, section: 0)
         
         getFileFromDisk()
         
@@ -278,7 +286,7 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         
         if indexPath.section == 0 {
             
-            let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! ElementTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! ImageTableViewCell
             
             if let image  = elementsArray[indexPath.row] as? UIImage {
             
@@ -292,16 +300,22 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
                 
             } else {
                 
+            
+                
+            let url  = elementsArray[indexPath.row] as! String
+            let fullUrl = URL(fileURLWithPath: "file://" + url)
+            print ("fullUrl:", fullUrl)
+                
+            let cell = self.tableView.dequeueReusableCell(withIdentifier: "videoCell") as! VideoCellTableViewCell
+                cell.videoPlayerItem = AVPlayerItem.init(url: fullUrl)
+                
 //            cell.picture.frame.size.width = 0
 //            cell.picture.frame.size.height = 0
            
-            print ("url:", elementsArray[indexPath.row])
-            
-                let url  = elementsArray[indexPath.row] as! String
-                let fullUrl = "file://" + url
+          
                 
-                cell.videoPlayerItem = AVPlayerItem.init(url: URL(string: fullUrl)!)
-                cell.startPlayback()
+//                cell.videoPlayerItem = AVPlayerItem.init(url: URL(string: fullUrl)!)
+//                cell.startPlayback()
                 
             }
            
@@ -319,6 +333,97 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         // Configure the cell...
         
         
+    }
+    
+    // определение что ячейка появилась на экране делается запуск и останавливается когда уходит с экрана
+    
+    func playerItemDidReachEnd(notification: Notification) {
+        let p: AVPlayerItem = notification.object as! AVPlayerItem
+        p.seek(to: kCMTimeZero)
+    }
+    
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let indexPaths = self.tableView.indexPathsForVisibleRows
+        var cells = [Any]()
+        for ip in indexPaths!{
+            if let videoCell = self.tableView.cellForRow(at: ip) as? VideoCellTableViewCell{
+                cells.append(videoCell)
+            }else{
+                let imageCell = self.tableView.cellForRow(at: ip) as! ImageTableViewCell
+                cells.append(imageCell)
+            }
+        }
+        let cellCount = cells.count
+        if cellCount == 0 {return}
+        if cellCount == 1{
+            print ("visible = \(indexPaths?[0])")
+            if visibleIP != indexPaths?[0]{
+                visibleIP = indexPaths?[0]
+            }
+            if let videoCell = cells.last! as? VideoCellTableViewCell{
+                self.playVideoOnTheCell(cell: videoCell, indexPath: (indexPaths?.last)!)
+            }
+        }
+        if cellCount >= 2 {
+            for i in 0..<cellCount{
+                let cellRect = self.tableView.rectForRow(at: (indexPaths?[i])!)
+                let completelyVisible = self.tableView.bounds.contains(cellRect)
+                let intersect = cellRect.intersection(self.tableView.bounds)
+                
+                let currentHeight = intersect.height
+                print("\n \(currentHeight)")
+                let cellHeight = (cells[i] as AnyObject).frame.size.height
+                if currentHeight > (cellHeight * 0.95){
+                    if visibleIP != indexPaths?[i]{
+                        visibleIP = indexPaths?[i]
+                        print ("visible = \(indexPaths?[i])")
+                        if let videoCell = cells[i] as? VideoCellTableViewCell{
+                            self.playVideoOnTheCell(cell: videoCell, indexPath: (indexPaths?[i])!)
+                        }
+                    }
+                }
+                else{
+                    if aboutToBecomeInvisibleCell != indexPaths?[i].row{
+                        aboutToBecomeInvisibleCell = (indexPaths?[i].row)!
+                        if let videoCell = cells[i] as? VideoCellTableViewCell{
+                            self.stopPlayBack(cell: videoCell, indexPath: (indexPaths?[i])!)
+                        }
+                        
+                    }
+                }
+            }
+        }
+    }
+    
+    func checkVisibilityOfCell(cell : VideoCellTableViewCell, indexPath : IndexPath){
+        let cellRect = self.tableView.rectForRow(at: indexPath)
+        let completelyVisible = self.tableView.bounds.contains(cellRect)
+        if completelyVisible {
+            self.playVideoOnTheCell(cell: cell, indexPath: indexPath)
+        }
+        else{
+            if aboutToBecomeInvisibleCell != indexPath.row{
+                aboutToBecomeInvisibleCell = indexPath.row
+                self.stopPlayBack(cell: cell, indexPath: indexPath)
+            }
+        }
+    }
+    
+    func playVideoOnTheCell(cell : VideoCellTableViewCell, indexPath : IndexPath){
+        cell.startPlayback()
+    }
+    
+    func stopPlayBack(cell : VideoCellTableViewCell, indexPath : IndexPath){
+        cell.stopPlayback()
+    }
+    
+    override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        print("end = \(indexPath)")
+        if let videoCell = cell as? VideoCellTableViewCell{
+            videoCell.stopPlayback()
+        }
+        
+        paused = true
     }
     
     

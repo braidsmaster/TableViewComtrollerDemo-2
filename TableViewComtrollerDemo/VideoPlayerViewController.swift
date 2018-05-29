@@ -22,7 +22,7 @@ class VideoPlayerViewController: UIViewController {
         
         avPlayer = AVPlayer(url: theURL!)
         avPlayerLayer = AVPlayerLayer(player: avPlayer)
-        avPlayerLayer.videoGravity = AVLayerVideoGravityResizeAspect
+        avPlayerLayer.videoGravity = AVLayerVideoGravity.resizeAspect
         avPlayer.volume = 3
         avPlayer.actionAtItemEnd = .none
         
@@ -37,7 +37,7 @@ class VideoPlayerViewController: UIViewController {
                                                object: avPlayer.currentItem)
     }
     
-    func playerItemDidReachEnd(notification: Notification) {
+    @objc func playerItemDidReachEnd(notification: Notification) {
         let p: AVPlayerItem = notification.object as! AVPlayerItem
         p.seek(to: kCMTimeZero)
     }

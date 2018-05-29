@@ -16,19 +16,32 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <view key="tableHeaderView" contentMode="scaleToFill" id="3mT-tR-hEa">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="55"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" red="0.90045538059999997" green="1" blue="0.1819183358" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        </view>
                         <view key="tableFooterView" contentMode="scaleToFill" id="sG4-iR-GSA">
-                            <rect key="frame" x="0.0" y="461" width="375" height="85"/>
+                            <rect key="frame" x="0.0" y="450" width="375" height="85"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.90045538059999997" green="1" blue="0.1819183358" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </view>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="275" id="CWu-iv-6mI" customClass="ElementTableViewCell" customModule="TableViewComtrollerDemo" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="83" width="375" height="275"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="videoCell" id="ZDO-Mq-vUA" customClass="VideoCellTableViewCell" customModule="TableViewComtrollerDemo" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ZDO-Mq-vUA" id="HK1-1r-DdA">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nqb-cb-VEJ">
+                                            <rect key="frame" x="0.0" y="-43" width="375" height="128"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </view>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="videoPlayerSuperView" destination="nqb-cb-VEJ" id="n3Y-oH-PQT"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="275" id="CWu-iv-6mI" customClass="ImageTableViewCell" customModule="TableViewComtrollerDemo" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="72" width="375" height="275"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="CWu-iv-6mI" id="TkN-6K-GPO">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="274.5"/>
@@ -46,20 +59,14 @@
                                                 <action selector="topButton:" destination="CWu-iv-6mI" eventType="touchUpInside" id="fi9-4t-WaO"/>
                                             </connections>
                                         </button>
-                                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nqb-cb-VEJ">
-                                            <rect key="frame" x="67" y="101" width="240" height="128"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        </view>
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="picture" destination="YjW-l0-KAg" id="rOm-V2-tcS"/>
-                                    <outlet property="videoPlayerSuperView" destination="nqb-cb-VEJ" id="AGy-Rj-Qsv"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell2" rowHeight="103" id="qSS-kI-GCF">
-                                <rect key="frame" x="0.0" y="358" width="375" height="103"/>
+                                <rect key="frame" x="0.0" y="347" width="375" height="103"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="qSS-kI-GCF" id="G5y-Zg-sZM">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="102.5"/>
