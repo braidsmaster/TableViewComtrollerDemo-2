@@ -32,21 +32,29 @@ class VideoCellTableViewCell: UITableViewCell {
     }
     
     func setupMoviePlayer(){
+        print("setup")
         self.avPlayer = AVPlayer.init(playerItem: self.videoPlayerItem)
         avPlayerLayer = AVPlayerLayer(player: avPlayer)
         avPlayerLayer?.videoGravity = AVLayerVideoGravity.resizeAspect
         avPlayer?.volume = 3
         avPlayer?.actionAtItemEnd = .none
-        if UIScreen.main.bounds.width == 375 {
-            let widthRequired = self.frame.size.width - 20
-            avPlayerLayer?.frame = CGRect.init(x: 0, y: 0, width: widthRequired, height: widthRequired/1.78)
-        }else if UIScreen.main.bounds.width == 320 {
-            avPlayerLayer?.frame = CGRect.init(x: 0, y: 0, width: (self.frame.size.height - 120) * 1.78, height: self.frame.size.height - 120)
-            
-        }else{
-            let widthRequired = self.frame.size.width
-            avPlayerLayer?.frame = CGRect.init(x: 0, y: 0, width: widthRequired, height: widthRequired/1.78)
-        }
+
+        avPlayerLayer?.frame.size.width = self.frame.width
+        self.frame.size.height = self.frame.width * 3 / 4
+        avPlayerLayer?.frame.size.height = self.frame.width * 3 / 4
+//        if UIScreen.main.bounds.width == 375 {
+//
+//            let widthRequired = self.frame.size.width - 20
+//            avPlayerLayer?.frame = CGRect.init(x: 0, y: 0, width: widthRequired, height: widthRequired/1.78)
+//            print(avPlayerLayer?.frame )
+//        }else if UIScreen.main.bounds.width == 320 {
+//            avPlayerLayer?.frame = CGRect.init(x: 0, y: 0, width: (self.frame.size.height - 120) * 1.78, height: self.frame.size.height - 120)
+//            print(avPlayerLayer?.frame )
+//        }else{
+//            let widthRequired = self.frame.size.width
+//            avPlayerLayer?.frame = CGRect.init(x: 0, y: 0, width: widthRequired, height: widthRequired/1.78)
+//            print(avPlayerLayer?.frame )
+//        }
         self.backgroundColor = .clear
         self.videoPlayerSuperView.layer.insertSublayer(avPlayerLayer!, at: 0)
         
@@ -54,6 +62,7 @@ class VideoCellTableViewCell: UITableViewCell {
                                                selector: #selector(self.playerItemDidReachEnd(notification:)),
                                                name: NSNotification.Name.AVPlayerItemDidPlayToEndTime,
                                                object: avPlayer?.currentItem)
+//        self.avPlayer?.play()
     }
     
     func stopPlayback(){
@@ -61,6 +70,7 @@ class VideoCellTableViewCell: UITableViewCell {
     }
     
     func startPlayback(){
+        print("self.avPlayer?.play()")
         self.avPlayer?.play()
     }
     

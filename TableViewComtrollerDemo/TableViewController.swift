@@ -10,7 +10,7 @@ import UIKit
 import MobileCoreServices
 import Photos
 import AVKit
-
+import AVFoundation
 
 class TableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -21,12 +21,12 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
     var numbersFileInDirectory: [Int] = []
     var filesInDirectory: [String] = []
     
-    var avPlayer: AVPlayer!
+//    var avPlayer: AVPlayer!
     var visibleIP : IndexPath?
     var aboutToBecomeInvisibleCell = -1
-    var avPlayerLayer: AVPlayerLayer!
+//    var avPlayerLayer: AVPlayerLayer!
     var paused: Bool = false
-    
+//
     
     func getFileFromDisk() {
         
@@ -42,18 +42,23 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         numbersFileInDirectory=[]
         
         for value in filesInDirectory {
+            if value.contains(".MOV") {
+                let subValue = value.split(separator: ".")
+                numbersFileInDirectory.append(Int(subValue.first!)!)
+            } else {
             numbersFileInDirectory.append(Int(value)!)
+            }
         }
         
         elementsArray = []
-        for  value in numbersFileInDirectory.sorted() {
+        for  (index,value) in numbersFileInDirectory.sorted().enumerated() {
             if    let currentImage = UIImage(contentsOfFile: documentsDirectory!.appendingPathComponent(String(value)).path) {
                 
                 elementsArray.append(currentImage)
                 
             } else  {
                 
-            elementsArray.append(documentsDirectory!.appendingPathComponent(String(value)).path)
+            elementsArray.append(documentsDirectory!.appendingPathComponent(String(filesInDirectory[index])).path)
             }
         }
         print (numbersFileInDirectory.sorted())
@@ -68,8 +73,8 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         super.viewDidAppear(true)
         // перемотка  работает  но только когда много
         
-        let indexPath  = IndexPath(row: 0, section: 1)
-        self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+//        let indexPath  = IndexPath(row: 0, section: 0)
+//        self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
     }
     
     override func viewDidLoad() {
@@ -190,8 +195,8 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
             mediaType == (kUTTypeMovie as String),
             let url = info[UIImagePickerControllerMediaURL] as? URL{
             
-            
-            let newFileName = String(filesInDirectory.count*10)
+            print("choose video url \(url)")
+            let newFileName = String(filesInDirectory.count*10) + ".MOV"
             let videoUrl = documentsDirectory!.appendingPathComponent(newFileName, isDirectory: true)
             
             do {
@@ -262,20 +267,21 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
     
     // MARK: - Table view data source
     
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 2
-    }
+//    override func numberOfSections(in tableView: UITableView) -> Int {
+//        // #warning Incomplete implementation, return the number of sections
+//        return 1
+//    }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         
-        if section == 0 {
-            
+//        if section == 0 {
+        
             return numbersFileInDirectory.count
-        } else {
-            return 1
-        }
+//        }
+//        else {
+//            return 1
+//        }
         
     }
     
@@ -284,12 +290,12 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         
-        if indexPath.section == 0 {
-            
-            let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! ImageTableViewCell
+//        if indexPath.section == 0 {
+        
+
             
             if let image  = elementsArray[indexPath.row] as? UIImage {
-            
+                let cell = tableView.dequeueReusableCell(withIdentifier: "imageCell", for: indexPath) as! ImageTableViewCell
                 cell.picture.image = image
                 
                 cell.parrentController = self
@@ -297,38 +303,44 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
                 let const = cell.picture.image!.size.height / cell.picture.image!.size.width
                 tableView.rowHeight =  cell.frame.size.width * const
                 print (cell.picture.image!.size.width, cell.frame.size.width, const)
+                return cell
                 
             } else {
                 
             
                 
             let url  = elementsArray[indexPath.row] as! String
-            let fullUrl = URL(fileURLWithPath: "file://" + url)
+            print("url string \(url)")
+            let fullUrl = URL(fileURLWithPath: url)
             print ("fullUrl:", fullUrl)
                 
             let cell = self.tableView.dequeueReusableCell(withIdentifier: "videoCell") as! VideoCellTableViewCell
+                 let bundleurl = Bundle.main.url(forResource:"IMG_5304", withExtension: "MOV")
                 cell.videoPlayerItem = AVPlayerItem.init(url: fullUrl)
-                
+                print("videoCellItem \(cell.videoPlayerItem)")
+//                cell.frame.size.height = 300
+//                cell.startPlayback()
 //            cell.picture.frame.size.width = 0
 //            cell.picture.frame.size.height = 0
            
-          
+          return cell
                 
 //                cell.videoPlayerItem = AVPlayerItem.init(url: URL(string: fullUrl)!)
 //                cell.startPlayback()
                 
             }
-           
+        
             
-            return cell
+        
             
-        } else {
-            
-            tableView.rowHeight = 105
-            
-            let cell = tableView.dequeueReusableCell(withIdentifier: "cell2", for: indexPath)
-            return cell
-        }
+//        }
+//        else {
+//
+//            tableView.rowHeight = 105
+//
+//            let cell = tableView.dequeueReusableCell(withIdentifier: "cell2", for: indexPath)
+//            return cell
+//        }
         
         // Configure the cell...
         
@@ -347,10 +359,13 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         var cells = [Any]()
         for ip in indexPaths!{
             if let videoCell = self.tableView.cellForRow(at: ip) as? VideoCellTableViewCell{
+                print("Videocell add")
                 cells.append(videoCell)
             }else{
-                let imageCell = self.tableView.cellForRow(at: ip) as! ImageTableViewCell
+                if  let imageCell = self.tableView.cellForRow(at: ip) as? ImageTableViewCell {
+                print("ImageCell add")
                 cells.append(imageCell)
+                }
             }
         }
         let cellCount = cells.count
@@ -371,14 +386,20 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
                 let intersect = cellRect.intersection(self.tableView.bounds)
                 
                 let currentHeight = intersect.height
-                print("\n \(currentHeight)")
+                
                 let cellHeight = (cells[i] as AnyObject).frame.size.height
-                if currentHeight > (cellHeight * 0.95){
+                print("\n currentHeight \(currentHeight) cellHeight \(cellHeight * 0.3) visibleIP \(visibleIP)")
+                if currentHeight > (cellHeight * 0.4){
+                    print(">")
                     if visibleIP != indexPaths?[i]{
+                        print("!=")
                         visibleIP = indexPaths?[i]
-                        print ("visible = \(indexPaths?[i])")
+                        print ("visible11 = \(indexPaths?[i])")
                         if let videoCell = cells[i] as? VideoCellTableViewCell{
                             self.playVideoOnTheCell(cell: videoCell, indexPath: (indexPaths?[i])!)
+                        }
+                        if let imageCell = cells[i] as? ImageTableViewCell{
+                            imageCell.iconFrame()
                         }
                     }
                 }
@@ -395,21 +416,22 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         }
     }
     
-    func checkVisibilityOfCell(cell : VideoCellTableViewCell, indexPath : IndexPath){
-        let cellRect = self.tableView.rectForRow(at: indexPath)
-        let completelyVisible = self.tableView.bounds.contains(cellRect)
-        if completelyVisible {
-            self.playVideoOnTheCell(cell: cell, indexPath: indexPath)
-        }
-        else{
-            if aboutToBecomeInvisibleCell != indexPath.row{
-                aboutToBecomeInvisibleCell = indexPath.row
-                self.stopPlayBack(cell: cell, indexPath: indexPath)
-            }
-        }
-    }
+//     func checkVisibilityOfCell(cell : VideoCellTableViewCell, indexPath : IndexPath){
+//        let cellRect = self.tableView.rectForRow(at: indexPath)
+//        let completelyVisible = self.tableView.bounds.contains(cellRect)
+//        if completelyVisible {
+//            self.playVideoOnTheCell(cell: cell, indexPath: indexPath)
+//        }
+//        else{
+//            if aboutToBecomeInvisibleCell != indexPath.row{
+//                aboutToBecomeInvisibleCell = indexPath.row
+//                self.stopPlayBack(cell: cell, indexPath: indexPath)
+//            }
+//        }
+//    }
     
     func playVideoOnTheCell(cell : VideoCellTableViewCell, indexPath : IndexPath){
+        print("play")
         cell.startPlayback()
     }
     

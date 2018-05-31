@@ -98,26 +98,26 @@ class ImageTableViewCell: UITableViewCell, UIImagePickerControllerDelegate, UINa
         picture.frame = CGRect(origin: iconOrigin, size: iconSize)
     }
     
-    func videoFrame() {
- //       let const = picture.image!.size.height / picture.image!.size.width
-        let const = CGFloat (16/9)
-        let iconWidth: CGFloat = self.frame.width
-        let iconHeight: CGFloat = self.frame.width * const
-        let iconSize = CGSize(width: iconWidth, height: iconHeight)
-        let iconOrigin = CGPoint(x: bounds.midX - iconWidth / 2, y: bounds.midY - iconHeight / 2)
-        picture.frame = CGRect(origin: iconOrigin, size: iconSize)
-    }
+//    func videoFrame() {
+// //       let const = picture.image!.size.height / picture.image!.size.width
+//        let const = CGFloat (16/9)
+//        let iconWidth: CGFloat = self.frame.width
+//        let iconHeight: CGFloat = self.frame.width * const
+//        let iconSize = CGSize(width: iconWidth, height: iconHeight)
+//        let iconOrigin = CGPoint(x: bounds.midX - iconWidth / 2, y: bounds.midY - iconHeight / 2)
+//        picture.frame = CGRect(origin: iconOrigin, size: iconSize)
+//    }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        if picture.image != nil {
+//        if picture.image != nil {
             iconFrame()
             
-        } else {
-            
-            videoFrame()
-            
-        }
+//        } else {
+//
+//            videoFrame()
+//
+//        }
     }
 //    override func awakeFromNib() {
 //        super.awakeFromNib()

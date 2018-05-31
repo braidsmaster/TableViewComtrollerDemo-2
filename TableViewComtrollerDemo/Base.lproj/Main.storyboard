@@ -17,31 +17,48 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <view key="tableFooterView" contentMode="scaleToFill" id="sG4-iR-GSA">
-                            <rect key="frame" x="0.0" y="450" width="375" height="85"/>
+                            <rect key="frame" x="0.0" y="531" width="375" height="85"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q5d-Z9-Ji5">
+                                    <rect key="frame" x="152" y="22" width="70" height="30"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <state key="normal" title="add photo"/>
+                                    <connections>
+                                        <action selector="addBottom:" destination="0hZ-HR-Wlk" eventType="touchUpInside" id="KWP-oj-1DU"/>
+                                    </connections>
+                                </button>
+                            </subviews>
                             <color key="backgroundColor" red="0.90045538059999997" green="1" blue="0.1819183358" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </view>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="videoCell" id="ZDO-Mq-vUA" customClass="VideoCellTableViewCell" customModule="TableViewComtrollerDemo" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="videoCell" rowHeight="228" id="ZDO-Mq-vUA" customClass="VideoCellTableViewCell" customModule="TableViewComtrollerDemo" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="228"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ZDO-Mq-vUA" id="HK1-1r-DdA">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="227.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nqb-cb-VEJ">
-                                            <rect key="frame" x="0.0" y="-43" width="375" height="128"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nqb-cb-VEJ">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="228"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="228" id="ejK-4I-U54"/>
+                                            </constraints>
                                         </view>
                                     </subviews>
                                 </tableViewCellContentView>
+                                <constraints>
+                                    <constraint firstItem="nqb-cb-VEJ" firstAttribute="centerX" secondItem="ZDO-Mq-vUA" secondAttribute="centerX" id="fpc-dZ-x8k"/>
+                                    <constraint firstItem="nqb-cb-VEJ" firstAttribute="centerY" secondItem="ZDO-Mq-vUA" secondAttribute="centerY" id="iIW-rH-tRo"/>
+                                    <constraint firstItem="nqb-cb-VEJ" firstAttribute="width" secondItem="ZDO-Mq-vUA" secondAttribute="width" id="yh8-MX-RZX"/>
+                                </constraints>
                                 <connections>
                                     <outlet property="videoPlayerSuperView" destination="nqb-cb-VEJ" id="n3Y-oH-PQT"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="275" id="CWu-iv-6mI" customClass="ImageTableViewCell" customModule="TableViewComtrollerDemo" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="72" width="375" height="275"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="imageCell" rowHeight="275" id="CWu-iv-6mI" customClass="ImageTableViewCell" customModule="TableViewComtrollerDemo" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="256" width="375" height="275"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="CWu-iv-6mI" id="TkN-6K-GPO">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="274.5"/>
@@ -64,25 +81,6 @@
                                 <connections>
                                     <outlet property="picture" destination="YjW-l0-KAg" id="rOm-V2-tcS"/>
                                 </connections>
-                            </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell2" rowHeight="103" id="qSS-kI-GCF">
-                                <rect key="frame" x="0.0" y="347" width="375" height="103"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="qSS-kI-GCF" id="G5y-Zg-sZM">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="102.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q5d-Z9-Ji5">
-                                            <rect key="frame" x="152" y="36" width="70" height="30"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <state key="normal" title="add photo"/>
-                                            <connections>
-                                                <action selector="addBottom:" destination="0hZ-HR-Wlk" eventType="touchUpInside" id="KWP-oj-1DU"/>
-                                            </connections>
-                                        </button>
-                                    </subviews>
-                                    <color key="backgroundColor" red="1" green="0.5409764051" blue="0.84731429820000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </tableViewCellContentView>
                             </tableViewCell>
                         </prototypes>
                         <connections>
