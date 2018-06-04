@@ -36,12 +36,12 @@ class VideoCellTableViewCell: UITableViewCell {
         self.avPlayer = AVPlayer.init(playerItem: self.videoPlayerItem)
         avPlayerLayer = AVPlayerLayer(player: avPlayer)
         avPlayerLayer?.videoGravity = AVLayerVideoGravity.resizeAspect
-        avPlayer?.volume = 3
+        avPlayer?.volume = 0
         avPlayer?.actionAtItemEnd = .none
 
         avPlayerLayer?.frame.size.width = self.frame.width
-        self.frame.size.height = self.frame.width * 3 / 4
-        avPlayerLayer?.frame.size.height = self.frame.width * 3 / 4
+        self.frame.size.height = self.frame.width * 9 / 16
+        avPlayerLayer?.frame.size.height = self.frame.width * 9 / 16
 //        if UIScreen.main.bounds.width == 375 {
 //
 //            let widthRequired = self.frame.size.width - 20
