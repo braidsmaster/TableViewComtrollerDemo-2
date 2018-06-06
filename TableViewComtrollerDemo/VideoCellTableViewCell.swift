@@ -37,24 +37,11 @@ class VideoCellTableViewCell: UITableViewCell {
         avPlayerLayer = AVPlayerLayer(player: avPlayer)
         avPlayerLayer?.videoGravity = AVLayerVideoGravity.resizeAspect
         avPlayer?.volume = 0
+        
         avPlayer?.actionAtItemEnd = .none
-
         avPlayerLayer?.frame.size.width = self.frame.width
         self.frame.size.height = self.frame.width * 9 / 16
         avPlayerLayer?.frame.size.height = self.frame.width * 9 / 16
-//        if UIScreen.main.bounds.width == 375 {
-//
-//            let widthRequired = self.frame.size.width - 20
-//            avPlayerLayer?.frame = CGRect.init(x: 0, y: 0, width: widthRequired, height: widthRequired/1.78)
-//            print(avPlayerLayer?.frame )
-//        }else if UIScreen.main.bounds.width == 320 {
-//            avPlayerLayer?.frame = CGRect.init(x: 0, y: 0, width: (self.frame.size.height - 120) * 1.78, height: self.frame.size.height - 120)
-//            print(avPlayerLayer?.frame )
-//        }else{
-//            let widthRequired = self.frame.size.width
-//            avPlayerLayer?.frame = CGRect.init(x: 0, y: 0, width: widthRequired, height: widthRequired/1.78)
-//            print(avPlayerLayer?.frame )
-//        }
         self.backgroundColor = .clear
         self.videoPlayerSuperView.layer.insertSublayer(avPlayerLayer!, at: 0)
         
@@ -63,6 +50,17 @@ class VideoCellTableViewCell: UITableViewCell {
                                                name: NSNotification.Name.AVPlayerItemDidPlayToEndTime,
                                                object: avPlayer?.currentItem)
 //        self.avPlayer?.play()
+    }
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        videoFrame()
+    }
+    
+    func videoFrame()  {
+        avPlayerLayer?.frame.size.width = self.frame.width
+        self.frame.size.height = self.frame.width * 9 / 16
+        avPlayerLayer?.frame.size.height = self.frame.width * 9 / 16
+        self.backgroundColor = .clear
     }
     
     func stopPlayback(){

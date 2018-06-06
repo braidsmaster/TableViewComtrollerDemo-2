@@ -58,7 +58,8 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
                 
             } else  {
                 
-            elementsArray.append(documentsDirectory!.appendingPathComponent(String(filesInDirectory[index])).path)
+                let videoDir = NSHomeDirectory() + "/video/"
+                elementsArray.append(videoDir + filesInDirectory[index] + ".MOV")
             }
         }
         print (numbersFileInDirectory.sorted())
@@ -77,8 +78,12 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-       
+        let videoDir = NSHomeDirectory() + "/video"
+        do {
+            try FileManager.default.createDirectory(atPath: videoDir, withIntermediateDirectories: true, attributes: nil)
+        } catch let error {
+            print(error)
+        }
     
         visibleIP = IndexPath.init(row: 0, section: 0)
         
@@ -163,18 +168,24 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
             mediaType == (kUTTypeMovie as String),
             let url = info[UIImagePickerControllerMediaURL] as? URL{
             
-            print("choose video url \(url)")
+            let fileNmaeWithOutExtension = String(filesInDirectory.count*10)
+            let filePathWithOutExtension = documentsDirectory!.appendingPathComponent(fileNmaeWithOutExtension, isDirectory: true)
             let newFileName = String(filesInDirectory.count*10) + ".MOV"
-            let videoUrl = documentsDirectory!.appendingPathComponent(newFileName, isDirectory: true)
+            let videoDirUrl = URL(fileURLWithPath: NSHomeDirectory() + "/video")
+            let videoUrl = videoDirUrl.appendingPathComponent(newFileName, isDirectory: true)
+            let data = ""
             
             do {
 
                 try FileManager.default.moveItem(at: url, to: videoUrl)
+//                try FileManager.default.createFile(atPath: fileNmaeWithOutExtension, contents: nil, attributes: nil)
+                try data.write(to: filePathWithOutExtension, atomically: true, encoding: .utf8)
+              
             } catch {
                 
                 print (error)
             }
-            
+  
              getFileFromDisk()
             
 
@@ -228,14 +239,17 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
             
                 
             let url  = elementsArray[indexPath.row] as! String
-            print("url string \(url)")
+//            print("url string \(url)")
             let fullUrl = URL(fileURLWithPath: url)
-            print ("fullUrl:", fullUrl)
+//            print ("fullUrl:", fullUrl)
                 
             let cell = self.tableView.dequeueReusableCell(withIdentifier: "videoCell") as! VideoCellTableViewCell
 //                 let bundleurl = Bundle.main.url(forResource:"IMG_5304", withExtension: "MOV")
                 cell.videoPlayerItem = AVPlayerItem.init(url: fullUrl)
-                print("videoCellItem \(cell.videoPlayerItem)")
+                let resolution = resolutionForLocalVideo(url: fullUrl)
+                print(resolution)
+                
+//                print("videoCellItem \(cell.videoPlayerItem)")
 //                cell.frame.size.height = 300
 //                cell.startPlayback()
 //            cell.picture.frame.size.width = 0
@@ -264,6 +278,11 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         
         
     }
+    func resolutionForLocalVideo(url: URL) -> CGSize? {
+        guard let track = AVURLAsset(url: url).tracks(withMediaType: AVMediaType.video).first else { return nil }
+        let size = track.naturalSize.applying(track.preferredTransform)
+        return CGSize(width: fabs(size.width), height: fabs(size.height))
+    }
     
     // определение что ячейка появилась на экране делается запуск и останавливается когда уходит с экрана
     
@@ -277,11 +296,11 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         var cells = [Any]()
         for ip in indexPaths!{
             if let videoCell = self.tableView.cellForRow(at: ip) as? VideoCellTableViewCell{
-                print("Videocell add")
+//                print("Videocell add")
                 cells.append(videoCell)
             }else{
                 if  let imageCell = self.tableView.cellForRow(at: ip) as? ImageTableViewCell {
-                print("ImageCell add")
+//                print("ImageCell add")
                 cells.append(imageCell)
                 }
             }
@@ -289,7 +308,7 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         let cellCount = cells.count
         if cellCount == 0 {return}
         if cellCount == 1{
-            print ("visible = \(indexPaths?[0])")
+//            print ("visible = \(indexPaths?[0])")
             if visibleIP != indexPaths?[0]{
                 visibleIP = indexPaths?[0]
             }
@@ -315,6 +334,7 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
 //                        print ("visible11 = \(indexPaths?[i])")
                         if let videoCell = cells[i] as? VideoCellTableViewCell{
                             self.playVideoOnTheCell(cell: videoCell, indexPath: (indexPaths?[i])!)
+                            videoCell.videoFrame()
                         }
                         if let imageCell = cells[i] as? ImageTableViewCell{
                             imageCell.iconFrame()
@@ -337,7 +357,7 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
 
     
     func playVideoOnTheCell(cell : VideoCellTableViewCell, indexPath : IndexPath){
-        print("play")
+//        print("play")
         cell.startPlayback()
     }
     
@@ -346,7 +366,7 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
     }
     
     override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        print("end = \(indexPath)")
+//        print("end = \(indexPath)")
         if let videoCell = cell as? VideoCellTableViewCell{
             videoCell.stopPlayback()
         }
