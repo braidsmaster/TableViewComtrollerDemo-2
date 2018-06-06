@@ -30,10 +30,11 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
     
     func getFileFromDisk() {
         
+        let filesNumDir = NSHomeDirectory() + "/Documents/FilesNum"
         
         do {
             
-            filesInDirectory = try FileManager().contentsOfDirectory(atPath: documentsDirectory!.path)
+            filesInDirectory = try FileManager().contentsOfDirectory(atPath: filesNumDir)
             
         } catch let error as NSError {
             print(error)
@@ -58,7 +59,7 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
                 
             } else  {
                 
-                let videoDir = NSHomeDirectory() + "/video/"
+                let videoDir = NSHomeDirectory() + "/Documents/Video/"
                 elementsArray.append(videoDir + filesInDirectory[index] + ".MOV")
             }
         }
@@ -78,9 +79,13 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let videoDir = NSHomeDirectory() + "/video"
+        let videoDir = NSHomeDirectory() + "/Documents/Video"
+        let filesNumDir = NSHomeDirectory() + "/Documents/FilesNum"
         do {
             try FileManager.default.createDirectory(atPath: videoDir, withIntermediateDirectories: true, attributes: nil)
+            
+            try FileManager.default.createDirectory(atPath: filesNumDir, withIntermediateDirectories: true, attributes: nil)
+            
         } catch let error {
             print(error)
         }
@@ -171,7 +176,7 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
             let fileNmaeWithOutExtension = String(filesInDirectory.count*10)
             let filePathWithOutExtension = documentsDirectory!.appendingPathComponent(fileNmaeWithOutExtension, isDirectory: true)
             let newFileName = String(filesInDirectory.count*10) + ".MOV"
-            let videoDirUrl = URL(fileURLWithPath: NSHomeDirectory() + "/video")
+            let videoDirUrl = URL(fileURLWithPath: NSHomeDirectory() + "/Documents/Video")
             let videoUrl = videoDirUrl.appendingPathComponent(newFileName, isDirectory: true)
             let data = ""
             
