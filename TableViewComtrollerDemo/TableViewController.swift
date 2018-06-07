@@ -15,23 +15,30 @@ import AVFoundation
 class TableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     
-    var documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+//    var documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+    
+    let videoDir = NSHomeDirectory() + "/Documents/Video/"
+    let filesNumDir = NSHomeDirectory() + "/Documents/FilesNum/"
+    var videoDirURL: URL {
+        get {
+            return URL(fileURLWithPath: videoDir)
+        }
+    }
+    var filesNumDirURL: URL {
+        get {
+            return URL(fileURLWithPath: filesNumDir)
+        }
+    }
+
     
     var elementsArray:[Any] = []
     var numbersFileInDirectory: [Int] = []
     var filesInDirectory: [String] = []
-    
-//    var avPlayer: AVPlayer!
     var visibleIP : IndexPath?
     var aboutToBecomeInvisibleCell = -1
-//    var avPlayerLayer: AVPlayerLayer!
     var paused: Bool = false
-//
     
     func getFileFromDisk() {
-        
-        let filesNumDir = NSHomeDirectory() + "/Documents/FilesNum"
-        
         do {
             
             filesInDirectory = try FileManager().contentsOfDirectory(atPath: filesNumDir)
@@ -53,13 +60,12 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         
         elementsArray = []
         for  (index,value) in numbersFileInDirectory.sorted().enumerated() {
-            if    let currentImage = UIImage(contentsOfFile: documentsDirectory!.appendingPathComponent(String(value)).path) {
+            if    let currentImage = UIImage(contentsOfFile: filesNumDirURL.appendingPathComponent(String(value)).path) {
                 
                 elementsArray.append(currentImage)
                 
             } else  {
                 
-                let videoDir = NSHomeDirectory() + "/Documents/Video/"
                 elementsArray.append(videoDir + filesInDirectory[index] + ".MOV")
             }
         }
@@ -79,8 +85,7 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let videoDir = NSHomeDirectory() + "/Documents/Video"
-        let filesNumDir = NSHomeDirectory() + "/Documents/FilesNum"
+
         do {
             try FileManager.default.createDirectory(atPath: videoDir, withIntermediateDirectories: true, attributes: nil)
             
@@ -96,23 +101,11 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         
         checkPermission()
         
-        print (documentsDirectory)
+        print (filesNumDirURL)
         
        
     }
-    
-//    @IBAction func add(_ sender: Any) {
-//        
-//        let imagePicker = UIImagePickerController()
-//        imagePicker.sourceType = .photoLibrary
-//        imagePicker.allowsEditing = false
-//        imagePicker.mediaTypes = [kUTTypeImage as String]
-//        imagePicker.delegate = self
-//        
-//        present(imagePicker, animated: true, completion: nil)
-//        
-//    }
-    
+ 
     
     func checkPermission() {
         let photoAuthorizationStatus = PHPhotoLibrary.authorizationStatus()
@@ -163,7 +156,7 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
             
             
             let newFileName = String(filesInDirectory.count*10)
-            let url = documentsDirectory!.appendingPathComponent(newFileName, isDirectory: true)
+            let url = filesNumDirURL.appendingPathComponent(newFileName, isDirectory: true)
             
             let data = UIImagePNGRepresentation(image.fixedOrientation()!)
             FileManager.default.createFile(atPath: url.path, contents: data, attributes: nil)
@@ -174,16 +167,14 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
             let url = info[UIImagePickerControllerMediaURL] as? URL{
             
             let fileNmaeWithOutExtension = String(filesInDirectory.count*10)
-            let filePathWithOutExtension = documentsDirectory!.appendingPathComponent(fileNmaeWithOutExtension, isDirectory: true)
+            let filePathWithOutExtension = filesNumDirURL.appendingPathComponent(fileNmaeWithOutExtension, isDirectory: true)
             let newFileName = String(filesInDirectory.count*10) + ".MOV"
-            let videoDirUrl = URL(fileURLWithPath: NSHomeDirectory() + "/Documents/Video")
-            let videoUrl = videoDirUrl.appendingPathComponent(newFileName, isDirectory: true)
+            let videoUrl = videoDirURL.appendingPathComponent(newFileName, isDirectory: true)
             let data = ""
             
             do {
 
                 try FileManager.default.moveItem(at: url, to: videoUrl)
-//                try FileManager.default.createFile(atPath: fileNmaeWithOutExtension, contents: nil, attributes: nil)
                 try data.write(to: filePathWithOutExtension, atomically: true, encoding: .utf8)
               
             } catch {
@@ -213,81 +204,47 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 
-        
             return numbersFileInDirectory.count
-
-        
     }
     
     // заполняем ячейки
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        
-//        if indexPath.section == 0 {
-        
 
-            
             if let image  = elementsArray[indexPath.row] as? UIImage {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "imageCell", for: indexPath) as! ImageTableViewCell
-                cell.picture.image = image
-                
-                cell.parrentController = self
+//                cell.picture.image = image
+
+                cell.setImage(imageName: image)
                 
                 let const = cell.picture.image!.size.height / cell.picture.image!.size.width
                 tableView.rowHeight =  cell.frame.size.width * const
-                print (cell.picture.image!.size.width, cell.frame.size.width, const)
+
+//                print (cell.picture.image!.size.width, cell.frame.size.width, const)
+                print("img",tableView.rowHeight)
+                cell.parrentController = self
                 return cell
                 
             } else {
                 
-            
-                
             let url  = elementsArray[indexPath.row] as! String
-//            print("url string \(url)")
+            print("url string \(url)")
             let fullUrl = URL(fileURLWithPath: url)
-//            print ("fullUrl:", fullUrl)
-                
             let cell = self.tableView.dequeueReusableCell(withIdentifier: "videoCell") as! VideoCellTableViewCell
-//                 let bundleurl = Bundle.main.url(forResource:"IMG_5304", withExtension: "MOV")
+                let resolution = cell.resolutionForLocalVideo(url: fullUrl)
                 cell.videoPlayerItem = AVPlayerItem.init(url: fullUrl)
-                let resolution = resolutionForLocalVideo(url: fullUrl)
-                print(resolution)
-                
-//                print("videoCellItem \(cell.videoPlayerItem)")
-//                cell.frame.size.height = 300
-//                cell.startPlayback()
-//            cell.picture.frame.size.width = 0
-//            cell.picture.frame.size.height = 0
-           
-          return cell
-                
-//                cell.videoPlayerItem = AVPlayerItem.init(url: URL(string: fullUrl)!)
-//                cell.startPlayback()
-                
+                let const = resolution!.height / resolution!.width
+                tableView.rowHeight = cell.frame.size.width * const
+
+                cell.videoFrame()
+                print("video",tableView.rowHeight)
+//                print(resolution)
+                return cell
+             
             }
-        
-            
-        
-            
-//        }
-//        else {
-//
-//            tableView.rowHeight = 105
-//
-//            let cell = tableView.dequeueReusableCell(withIdentifier: "cell2", for: indexPath)
-//            return cell
-//        }
-        
-        // Configure the cell...
-        
-        
+  
     }
-    func resolutionForLocalVideo(url: URL) -> CGSize? {
-        guard let track = AVURLAsset(url: url).tracks(withMediaType: AVMediaType.video).first else { return nil }
-        let size = track.naturalSize.applying(track.preferredTransform)
-        return CGSize(width: fabs(size.width), height: fabs(size.height))
-    }
+
     
     // определение что ячейка появилась на экране делается запуск и останавливается когда уходит с экрана
     

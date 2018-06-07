@@ -14,8 +14,6 @@
 		1F682A1920AD6A140090C917 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1F682A1720AD6A140090C917 /* LaunchScreen.storyboard */; };
 		1F682A2120AD6A300090C917 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F682A2020AD6A300090C917 /* TableViewController.swift */; };
 		1FDFEC2020BD49F7007C4BEC /* VideoCellTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FDFEC1F20BD49F6007C4BEC /* VideoCellTableViewCell.swift */; };
-		1FDFEC2220BD4A0A007C4BEC /* VideoPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FDFEC2120BD4A09007C4BEC /* VideoPlayerView.swift */; };
-		1FDFEC2420BD4A3C007C4BEC /* VideoPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FDFEC2320BD4A3C007C4BEC /* VideoPlayerViewController.swift */; };
 		61A71D0A20B2BF3400FEAF1B /* PhotoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A71D0920B2BF3400FEAF1B /* PhotoManager.swift */; };
 /* End PBXBuildFile section */
 
@@ -29,8 +27,6 @@
 		1F682A1A20AD6A140090C917 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1F682A2020AD6A300090C917 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		1FDFEC1F20BD49F6007C4BEC /* VideoCellTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoCellTableViewCell.swift; sourceTree = "<group>"; };
-		1FDFEC2120BD4A09007C4BEC /* VideoPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoPlayerView.swift; sourceTree = "<group>"; };
-		1FDFEC2320BD4A3C007C4BEC /* VideoPlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoPlayerViewController.swift; sourceTree = "<group>"; };
 		61A71D0920B2BF3400FEAF1B /* PhotoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -71,8 +67,6 @@
 				61A71D0920B2BF3400FEAF1B /* PhotoManager.swift */,
 				1F682A1520AD6A140090C917 /* Assets.xcassets */,
 				1FDFEC1F20BD49F6007C4BEC /* VideoCellTableViewCell.swift */,
-				1FDFEC2120BD4A09007C4BEC /* VideoPlayerView.swift */,
-				1FDFEC2320BD4A3C007C4BEC /* VideoPlayerViewController.swift */,
 				1F682A1720AD6A140090C917 /* LaunchScreen.storyboard */,
 				1F682A1A20AD6A140090C917 /* Info.plist */,
 			);
@@ -153,10 +147,8 @@
 				1F682A1120AD6A130090C917 /* ImageTableViewCell.swift in Sources */,
 				1F682A2120AD6A300090C917 /* TableViewController.swift in Sources */,
 				61A71D0A20B2BF3400FEAF1B /* PhotoManager.swift in Sources */,
-				1FDFEC2420BD4A3C007C4BEC /* VideoPlayerViewController.swift in Sources */,
 				1F682A0F20AD6A130090C917 /* AppDelegate.swift in Sources */,
 				1FDFEC2020BD49F7007C4BEC /* VideoCellTableViewCell.swift in Sources */,
-				1FDFEC2220BD4A0A007C4BEC /* VideoPlayerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -301,7 +293,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 5Z8WGUCB39;
+				DEVELOPMENT_TEAM = 257R75DVT3;
 				INFOPLIST_FILE = TableViewComtrollerDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -319,7 +311,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 5Z8WGUCB39;
+				DEVELOPMENT_TEAM = 257R75DVT3;
 				INFOPLIST_FILE = TableViewComtrollerDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

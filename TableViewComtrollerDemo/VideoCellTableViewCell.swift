@@ -16,6 +16,7 @@ class VideoCellTableViewCell: UITableViewCell {
     var avPlayer: AVPlayer?
     var avPlayerLayer: AVPlayerLayer?
     var paused: Bool = false
+    var videoResolution: CGSize?
     var videoPlayerItem: AVPlayerItem? = nil {
         didSet {
             /*
@@ -31,6 +32,13 @@ class VideoCellTableViewCell: UITableViewCell {
         self.setupMoviePlayer()
     }
     
+    func resolutionForLocalVideo(url: URL) -> CGSize? {
+        guard let track = AVURLAsset(url: url).tracks(withMediaType: AVMediaType.video).first else { return nil }
+        let size = track.naturalSize.applying(track.preferredTransform)
+        self.videoResolution = CGSize(width: fabs(size.width), height: fabs(size.height))
+        return CGSize(width: fabs(size.width), height: fabs(size.height))
+    }
+    
     func setupMoviePlayer(){
         print("setup")
         self.avPlayer = AVPlayer.init(playerItem: self.videoPlayerItem)
@@ -40,6 +48,7 @@ class VideoCellTableViewCell: UITableViewCell {
         
         avPlayer?.actionAtItemEnd = .none
         avPlayerLayer?.frame.size.width = self.frame.width
+        
         self.frame.size.height = self.frame.width * 9 / 16
         avPlayerLayer?.frame.size.height = self.frame.width * 9 / 16
         self.backgroundColor = .clear
@@ -57,10 +66,14 @@ class VideoCellTableViewCell: UITableViewCell {
     }
     
     func videoFrame()  {
+        if let resolution = videoResolution {
+        let const = resolution.height / resolution.width
+        let height = ceil(self.frame.width * const)
         avPlayerLayer?.frame.size.width = self.frame.width
-        self.frame.size.height = self.frame.width * 9 / 16
-        avPlayerLayer?.frame.size.height = self.frame.width * 9 / 16
+        self.frame.size.height = height
+        avPlayerLayer?.frame.size.height = height
         self.backgroundColor = .clear
+        }
     }
     
     func stopPlayback(){
@@ -68,7 +81,6 @@ class VideoCellTableViewCell: UITableViewCell {
     }
     
     func startPlayback(){
-        print("self.avPlayer?.play()")
         self.avPlayer?.play()
     }
     
