@@ -66,7 +66,7 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
                 
             } else  {
                 
-                elementsArray.append(videoDir + filesInDirectory[index] + ".MOV")
+                elementsArray.append(videoDir + "\(value)" + ".MOV")
             }
         }
         print (numbersFileInDirectory.sorted())
@@ -235,7 +235,7 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
                 cell.videoPlayerItem = AVPlayerItem.init(url: fullUrl)
                 if let res = resolution {
                 let const = res.height / res.width
-                tableView.rowHeight = cell.frame.size.width * const
+                tableView.rowHeight = ceil(cell.frame.size.width * const)
                 }
                 cell.videoFrame()
                 print("video",tableView.rowHeight)
