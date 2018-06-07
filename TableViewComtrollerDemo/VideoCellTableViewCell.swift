@@ -43,14 +43,21 @@ class VideoCellTableViewCell: UITableViewCell {
         print("setup")
         self.avPlayer = AVPlayer.init(playerItem: self.videoPlayerItem)
         avPlayerLayer = AVPlayerLayer(player: avPlayer)
-        avPlayerLayer?.videoGravity = AVLayerVideoGravity.resizeAspect
+        avPlayerLayer?.videoGravity = AVLayerVideoGravity.resize
         avPlayer?.volume = 0
         
         avPlayer?.actionAtItemEnd = .none
+//        avPlayerLayer?.frame.size.width = self.frame.width
+//
+//        self.frame.size.height = self.frame.width * 9 / 16
+//        avPlayerLayer?.frame.size.height = self.frame.width * 9 / 16
+        if let resolution = videoResolution {
+        let const = resolution.height / resolution.width
+        let height = ceil(self.frame.width * const)
         avPlayerLayer?.frame.size.width = self.frame.width
-        
-        self.frame.size.height = self.frame.width * 9 / 16
-        avPlayerLayer?.frame.size.height = self.frame.width * 9 / 16
+        self.frame.size.height = height
+        avPlayerLayer?.frame.size.height = height
+        }
         self.backgroundColor = .clear
         self.videoPlayerSuperView.layer.insertSublayer(avPlayerLayer!, at: 0)
         
