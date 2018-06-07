@@ -233,9 +233,10 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
             let cell = self.tableView.dequeueReusableCell(withIdentifier: "videoCell") as! VideoCellTableViewCell
                 let resolution = cell.resolutionForLocalVideo(url: fullUrl)
                 cell.videoPlayerItem = AVPlayerItem.init(url: fullUrl)
-                let const = resolution!.height / resolution!.width
+                if let res = resolution {
+                let const = res.height / res.width
                 tableView.rowHeight = cell.frame.size.width * const
-
+                }
                 cell.videoFrame()
                 print("video",tableView.rowHeight)
 //                print(resolution)
