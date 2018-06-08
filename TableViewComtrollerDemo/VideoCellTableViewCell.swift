@@ -11,7 +11,12 @@ import AVFoundation
 
 class VideoCellTableViewCell: UITableViewCell {
     
-    @IBOutlet weak var videoPlayerSuperView: UIView!
+    @IBOutlet weak var videoPlayerSuperView: UIView!{
+        didSet {
+            videoPlayerSuperView.translatesAutoresizingMaskIntoConstraints = false
+            
+        }
+    }
   
     var avPlayer: AVPlayer?
     var avPlayerLayer: AVPlayerLayer?

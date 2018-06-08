@@ -15,8 +15,6 @@ import AVFoundation
 class TableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     
-//    var documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
-    
     let videoDir = NSHomeDirectory() + "/Documents/Video/"
     let filesNumDir = NSHomeDirectory() + "/Documents/FilesNum/"
     var videoDirURL: URL {
@@ -165,7 +163,7 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         } else if let mediaType = info[UIImagePickerControllerMediaType] as? String,
             mediaType == (kUTTypeMovie as String),
             let url = info[UIImagePickerControllerMediaURL] as? URL{
-            
+            print("mediatype: ",url)
             let fileNmaeWithOutExtension = String(filesInDirectory.count*10)
             let filePathWithOutExtension = filesNumDirURL.appendingPathComponent(fileNmaeWithOutExtension, isDirectory: true)
             let newFileName = String(filesInDirectory.count*10) + ".MOV"
