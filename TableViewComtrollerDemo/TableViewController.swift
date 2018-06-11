@@ -72,6 +72,10 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         
         self.tableView.reloadData()
         
+        // перемотка 2 строки
+        
+//        let indexPath  = IndexPath(row: 0, section: 0)
+//        self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
         
     }
     
@@ -244,6 +248,31 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
   
     }
 
+    // добавляем свайпы на ячейки
+    
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let addAction = UITableViewRowAction (style: .default, title: "add before") {
+        (action: UITableViewRowAction!,indexPath: IndexPath) -> Void in
+            print (indexPath.row)
+            let imagePicker = UIImagePickerController()
+            imagePicker.sourceType = .photoLibrary
+            imagePicker.allowsEditing = false
+            imagePicker.mediaTypes = [kUTTypeImage as String, kUTTypeMovie as String]
+            imagePicker.delegate = self
+            
+            self.present(imagePicker, animated: true, completion: nil)
+            
+        }
+        let deleteAction = UITableViewRowAction (style: .default, title: "delete") {
+            (action: UITableViewRowAction!,indexPath: IndexPath) -> Void in
+        }
+        
+        return [addAction,deleteAction]
+    }
+    
+//    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+//        print ("delete row")
+//    }
     
     // определение что ячейка появилась на экране делается запуск и останавливается когда уходит с экрана
     

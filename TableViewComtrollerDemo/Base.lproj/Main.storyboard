@@ -61,14 +61,6 @@
                                             <rect key="frame" x="16" y="93" width="343" height="144"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         </imageView>
-                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vfW-X9-6ZE">
-                                            <rect key="frame" x="141" y="27" width="70" height="30"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <state key="normal" title="add photo"/>
-                                            <connections>
-                                                <action selector="topButton:" destination="CWu-iv-6mI" eventType="touchUpInside" id="fi9-4t-WaO"/>
-                                            </connections>
-                                        </button>
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>

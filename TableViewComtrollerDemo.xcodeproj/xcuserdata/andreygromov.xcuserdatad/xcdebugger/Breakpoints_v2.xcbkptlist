@@ -10,13 +10,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "TableViewComtrollerDemo/TableViewController.swift"
-            timestampString = "549967246.346806"
+            timestampString = "550400925.063068"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "108"
-            endingLineNumber = "108"
-            landmarkName = "TableViewController"
-            landmarkType = "3">
+            startingLineNumber = "112"
+            endingLineNumber = "112"
+            landmarkName = "checkPermission()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "TableViewComtrollerDemo/TableViewController.swift"
-            timestampString = "549967246.347227"
+            timestampString = "550400925.063826"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "76"
-            endingLineNumber = "76"
+            startingLineNumber = "80"
+            endingLineNumber = "80"
             landmarkName = "getFileFromDisk()"
             landmarkType = "7">
          </BreakpointContent>
