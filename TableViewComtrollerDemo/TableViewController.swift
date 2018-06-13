@@ -249,30 +249,48 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
     }
 
     // добавляем свайпы на ячейки
+// это две кнопки если на свайпе
+//    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+//        let addAction = UITableViewRowAction (style: .default, title: "add before") {
+//        (action: UITableViewRowAction!,indexPath: IndexPath) -> Void in
+//            print (indexPath.row)
+//            let imagePicker = UIImagePickerController()
+//            imagePicker.sourceType = .photoLibrary
+//            imagePicker.allowsEditing = false
+//            imagePicker.mediaTypes = [kUTTypeImage as String, kUTTypeMovie as String]
+//            imagePicker.delegate = self
+//
+//            self.present(imagePicker, animated: true, completion: nil)
+//
+//        }
+//        let deleteAction = UITableViewRowAction (style: .default, title: "delete") {
+//            (action: UITableViewRowAction!,indexPath: IndexPath) -> Void in
+//        }
+//
+//        return [addAction,deleteAction]
+//    }
     
-    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let addAction = UITableViewRowAction (style: .default, title: "add before") {
-        (action: UITableViewRowAction!,indexPath: IndexPath) -> Void in
-            print (indexPath.row)
-            let imagePicker = UIImagePickerController()
-            imagePicker.sourceType = .photoLibrary
-            imagePicker.allowsEditing = false
-            imagePicker.mediaTypes = [kUTTypeImage as String, kUTTypeMovie as String]
-            imagePicker.delegate = self
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    
+        do {
+            let ipath = filesNumDir + "\(indexPath.row * 10)"
+            let vpath = videoDir + "\(indexPath.row * 10).MOV"
+        
+            try FileManager.default.removeItem(atPath: ipath)
+            try FileManager.default.removeItem(atPath: vpath)
             
-            self.present(imagePicker, animated: true, completion: nil)
-            
-        }
-        let deleteAction = UITableViewRowAction (style: .default, title: "delete") {
-            (action: UITableViewRowAction!,indexPath: IndexPath) -> Void in
+            print("file deleted \(ipath)")
+        } catch let error as NSError {
+            print("error deleting file: \(error.localizedDescription)")
         }
         
-        return [addAction,deleteAction]
-    }
+         elementsArray.remove(at: indexPath.row)
+         numbersFileInDirectory.remove(at: indexPath.row)
+        
+        tableView.reloadData()
     
-//    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-//        print ("delete row")
-//    }
+    //    print ("delete row")
+    }
     
     // определение что ячейка появилась на экране делается запуск и останавливается когда уходит с экрана
     
