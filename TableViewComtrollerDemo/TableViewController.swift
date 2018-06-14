@@ -81,8 +81,12 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
     
     
     override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(true)
-     
+        super.viewDidAppear(animated)
+        
+        NotificationCenter.default.addObserver(forName: .UIContentSizeCategoryDidChange, object: .none, queue: OperationQueue.main) { [weak self] _ in
+            print("UIContentSizeCategoryDidChange")
+            self?.tableView.reloadData()
+        }
     }
     
     override func viewDidLoad() {
@@ -105,6 +109,8 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         
         print (filesNumDirURL)
         
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 300
        
     }
  
@@ -273,8 +279,8 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
     
         do {
-            let ipath = filesNumDir + "\(indexPath.row * 10)"
-            let vpath = videoDir + "\(indexPath.row * 10).MOV"
+            let ipath = filesNumDir + "\((indexPath.row + 1) * 10)"
+            let vpath = videoDir + "\((indexPath.row + 1) * 10).MOV"
         
             try FileManager.default.removeItem(atPath: ipath)
             try FileManager.default.removeItem(atPath: vpath)
