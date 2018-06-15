@@ -35,6 +35,8 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
     var visibleIP : IndexPath?
     var aboutToBecomeInvisibleCell = -1
     var paused: Bool = false
+    let userDefaults = UserDefaults.standard
+    var elementsPATHArray:[String] = []
     
     func getFileFromDisk() {
         do {
@@ -67,14 +69,29 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
                 elementsArray.append(videoDir + "\(value)" + ".MOV")
             }
         }
-        print (numbersFileInDirectory.sorted())
-        print (elementsArray)
-        
+//        print (numbersFileInDirectory.sorted())
+//        print (elementsArray)
+
+//        for (index, value) in elementsURLArray.enumerated() {
+//        userDefaults.set(value, forKey: String(index))
+//        }
         self.tableView.reloadData()
         
         
     }
-    
+    func getURLList() {
+        
+        if let data = userDefaults.stringArray(forKey: "list") {
+            for value in data {
+//                let name = filesNumDir + value
+                elementsPATHArray.append(value)
+            }
+            
+            print("elementsURL: \(elementsPATHArray)")
+            tableView.reloadData()
+        }
+        
+    }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
@@ -98,6 +115,7 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         getFileFromDisk()
         
         checkPermission()
+        getURLList()
         
         print (filesNumDirURL)
         
@@ -154,8 +172,12 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
             
             
             let newFileName = String(filesInDirectory.count*10)
+            elementsPATHArray.append(newFileName)
+            print("SAVE elementsURL: \(elementsPATHArray)")
+            userDefaults.set(elementsPATHArray, forKey: "list")
             let url = filesNumDirURL.appendingPathComponent(newFileName, isDirectory: true)
-            
+
+//            userDefaults.synchronize()
             let data = UIImagePNGRepresentation(image.fixedOrientation()!)
             FileManager.default.createFile(atPath: url.path, contents: data, attributes: nil)
             getFileFromDisk()
@@ -167,7 +189,12 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
             let fileNmaeWithOutExtension = String(filesInDirectory.count*10)
             let filePathWithOutExtension = filesNumDirURL.appendingPathComponent(fileNmaeWithOutExtension, isDirectory: true)
             let newFileName = String(filesInDirectory.count*10) + ".MOV"
+            elementsPATHArray.append(newFileName)
+            print("SAVE elementsURL: \(elementsPATHArray)")
+            userDefaults.set(elementsPATHArray, forKey: "list")
             let videoUrl = videoDirURL.appendingPathComponent(newFileName, isDirectory: true)
+
+//            userDefaults.synchronize()
             let data = ""
             
             do {
@@ -208,8 +235,9 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
     // заполняем ячейки
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
-            if let image  = elementsArray[indexPath.row] as? UIImage {
+        
+        if let image = UIImage(contentsOfFile: filesNumDir + elementsPATHArray[indexPath.row]) {
+//            if let image  = elementsArray[indexPath.row] as? UIImage {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "imageCell", for: indexPath) as! ImageTableViewCell
 //                cell.picture.image = image
 
@@ -225,7 +253,8 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
                 
             } else {
                 
-            let url  = elementsArray[indexPath.row] as! String
+//            let url  = elementsArray[indexPath.row] as! String
+            let url = videoDir + elementsPATHArray[indexPath.row]
             print("url string \(url)")
             let fullUrl = URL(fileURLWithPath: url)
             let cell = self.tableView.dequeueReusableCell(withIdentifier: "videoCell") as! VideoCellTableViewCell
@@ -322,10 +351,17 @@ class TableViewController: UITableViewController, UIImagePickerControllerDelegat
         cell.startPlayback()
     }
     
+    
     func stopPlayBack(cell : VideoCellTableViewCell, indexPath : IndexPath){
         cell.stopPlayback()
     }
-    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        
+//        elementsPATHArray.remove(at: indexPath.row)
+//        print("SAVE elementsURL: \(elementsPATHArray)")
+//        userDefaults.set(elementsPATHArray, forKey: "list")
+        
+    }
     override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
 //        print("end = \(indexPath)")
         if let videoCell = cell as? VideoCellTableViewCell{
